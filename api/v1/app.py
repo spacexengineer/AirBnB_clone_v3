@@ -17,7 +17,9 @@ def close(self):
 @app.errorhandler(404)
 def page_not_found(e):
     """returns custom error in json format"""
-    return jsonify({'error': 'Not found'}), 404
+    error = jsonify({'error': 'Not found'})
+    error.status_code = 404
+    return (error)
 
 if __name__ == '__main__':
     """Where the Flask runs"""

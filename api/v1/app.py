@@ -10,7 +10,7 @@ app.register_blueprint(app_views)
 
 
 @app.teardown_appcontext
-def close(exception):
+def close(self):
     """close app"""
     storage.close()
 
@@ -18,7 +18,7 @@ def close(exception):
 @app.errorhandler(404)
 def page_not_found(e):
     """returns custom error in json format"""
-    return make_response(jsonify({"error": "Not found"}), 404)
+    return jsonify({"status": "OK"})
 
 if __name__ == '__main__':
     """Where the Flask runs"""

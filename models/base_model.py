@@ -60,9 +60,8 @@ class BaseModel:
             if not isinstance(attr_dict['updated_at'], datetime):
                 attr_dict['updated_at'] = datetime.strptime(
                     attr_dict['updated_at'], '%Y-%m-%d %H:%M:%S.%f')
-        if storage_type != 'db':
-            if attr_dict['__class__']:
-                attr_dict.pop('__class__')
+        if storage_type != 'db' and '__class__' in attr_dict:
+            del attr_dict['__class__']
         for attr, val in attr_dict.items():
             setattr(self, attr, val)
 
@@ -94,14 +93,14 @@ class BaseModel:
     def to_json(self):
         """returns json representation of self"""
         bm_dict = {}
-        for key, value in (self.__dict__).items():
-            if key == '_sa_instance_state':
-                del key
-            if (self.__is_serializable(value)):
-                bm_dict[key] = value
+        for key, val in (self.__dict__).items():
+            if (self.__is_serializable(val)):
+                bm_dict[key] = val
             else:
-                bm_dict[key] = str(value)
-        bm_dict['__class__'] = type(self).__name__
+                bm_dict[key] = str(val)
+        bm_dict["__class__"] = self.__class__.__name__
+        if "_sa_instance_state" in bm_dict:
+            del bm_dict["_sa_instance_state"]
         return(bm_dict)
 
     def __str__(self):

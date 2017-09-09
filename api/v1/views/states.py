@@ -10,13 +10,10 @@ from models.state import State
 @app_views.route('/states', methods=['GET'], strict_slashes=False)
 def get_all_states():
     """Show all states in json format with GET request"""
-    try:
-        states = []
-        for state in storage.all('State').values():
-            states.append(state.to_json())
-        return (jsonify(states))
-    except:
-        abort(404)
+    states = []
+    for state in storage.all('State').values():
+        states.append(state.to_json())
+    return (jsonify(states))
 
 
 @app_views.route('/states', methods=['POST'], strict_slashes=False)
@@ -26,8 +23,6 @@ def post_new_state():
 
     if kwargs is None:
         return ('Not a JSON', 400)
-    if kwargs.get('name') is None:
-            abort('Missing name', 400)
     if 'name' not in kwargs:
         return ('Missing name', 400)
 
@@ -46,10 +41,9 @@ def post_new_state():
 def get_state(state_id):
     """Retrieve state matching id"""
     state = storage.get('State', state_id)
-    try:
-        return (jsonify(state.to_json()))
-    except:
+    if state is None:
         abort(404)
+    return (jsonify(state.to_json()))
 
 
 @app_views.route('/states/<state_id>', methods=['DELETE'],

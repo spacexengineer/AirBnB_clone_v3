@@ -19,9 +19,8 @@ def get_all_states():
 @app_views.route('/states', methods=['POST'], strict_slashes=False)
 def post_new_state():
     """Create new state with POST request"""
-    try:
-        kwargs = request.get_json()
-    except:
+    kwargs = request.get_json()
+    if kwargs is None:
         return ('Not a JSON', 400)
 
     if 'name' not in kwargs:
@@ -61,9 +60,8 @@ def put_update_state(state_id):
     state = storage.get('State', state_id)
     if state is None:
         abort(404)
-    try:
-        kwargs = request.get_json()
-    except:
+    kwargs = request.get_json()
+    if kwargs is None:
         return ('Not a JSON', 400)
     for k, v in kwargs.items():
         setattr(state, k, v)

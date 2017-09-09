@@ -19,15 +19,13 @@ def get_all_states():
 @app_views.route('/states', methods=['POST'], strict_slashes=False)
 def post_new_state():
     """Create new state with POST request"""
-    kwargs = request.get_json()
-
-    if kwargs is None:
+    try:
+        kwargs = request.get_json()
+    except:
         return ('Not a JSON', 400)
+        
     if 'name' not in kwargs:
         return ('Missing name', 400)
-
-    # grab state class
-    State = CNC.get('State')
 
     # create new_state object with name given POST
     new_state = State(**kwargs)

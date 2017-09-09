@@ -23,7 +23,7 @@ def post_new_state():
         kwargs = request.get_json()
     except:
         return ('Not a JSON', 400)
-        
+
     if 'name' not in kwargs:
         return ('Missing name', 400)
 
@@ -34,7 +34,6 @@ def post_new_state():
     return (jsonify(new_state.to_json()), 201)
 
 
-# ###### requests with state id ################### #
 @app_views.route('/states/<state_id>', methods=['GET'], strict_slashes=False)
 def get_state(state_id):
     """Retrieve state matching id"""
@@ -62,8 +61,9 @@ def put_update_state(state_id):
     state = storage.get('State', state_id)
     if state is None:
         abort(404)
-    kwargs = request.get_json()
-    if kwargs is None:
+    try:
+        kwargs = request.get_json()
+    except:
         return ('Not a JSON', 400)
     for k, v in kwargs.items():
         setattr(state, k, v)

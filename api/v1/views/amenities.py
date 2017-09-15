@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Use REST structure with states in database"""
+"""REST Amenities API"""
 from flask import abort, Flask, jsonify, request
 from api.v1.views import app_views
 from models import storage

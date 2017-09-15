@@ -56,7 +56,7 @@ def post_review(place_id):
     if 'text' not in kwargs:
         return ('Missing text', 400)
 
-    new_review = Review(**request_dict)
+    new_review = Review(**kwargs)
     new_review.place_id = place_id
     user = storage.get('User', review.user_id)
     if user is None:

@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Starts API"""
 from flask import Flask, Blueprint, jsonify, make_response
+from flask_cors import CORS
 from models import storage
 from api.v1.views import app_views
 import os
